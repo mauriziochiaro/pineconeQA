@@ -49,17 +49,25 @@ def get_text():
 user_input = get_text()
 
 if user_input:
-    query = user_input
-    print(query)
+    # query = user_input
+    print(user_input)
 
-    docs = docsearch.similarity_search(query, include_metadata=True)
+    docs = docsearch.similarity_search(user_input, include_metadata=True)
+    # print(docs)
+    template = f"""Sei Lino, un assistente AI e sai rispondere a domande tecniche sull'uso del software Progetto INTEGRA.
+    Ti vengono fornite le seguenti parti estratte da un lungo documento e una domanda. Fornisci una risposta colloquiale.
+    Se non conosci la risposta, dì semplicemente "Hmm, non ne sono sicuro, la invito a contattare l'assistenza tecnica". Non cercare di inventare una risposta.
+    Se la domanda non riguarda Progetto INTEGRA, informali gentilmente che sei istruito solo per rispondere a domande su Progetto INTEGRA.
 
-    answer = chain.run(input_documents=docs, question=query)
+    Domanda: {user_input}
+
+    Fornisci la risposta e interessati se il cliente ha bisogno di ulteriori informazioni:"""
+
+    print(template)
+    answer = qa_chain.run(input_documents=docs[:2], question=template)
 
     st.session_state.past.append(user_input)
-    print(st.session_state.past)
     st.session_state.generated.append(answer)
-    print(st.session_state.past)
 
 if st.session_state["generated"]:
 
