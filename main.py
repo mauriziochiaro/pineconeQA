@@ -31,7 +31,7 @@ from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 
 llm = OpenAI(temperature=0, openai_api_key=OPENAI_API_KEY, max_tokens=1000)
-chain = load_qa_chain(llm, chain_type="stuff")
+qa_chain = load_qa_chain(llm, chain_type="stuff")
 
 st.success("Puoi chiedermi informazioni riguardo la documentazione di Progetto INTEGRA")   
 
