@@ -13,7 +13,8 @@ import pinecone
 
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 PINECONE_API_KEY = st.secrets["PINECONE_API_KEY"]
-PINECONE_API_ENV = st.secret["PINECONE_API_ENV"]
+# PINECONE_API_ENV = st.secret["PINECONE_API_ENV"]
+PINECONE_API_ENV = "us-east-1-aws"
 
 embedding = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
 
