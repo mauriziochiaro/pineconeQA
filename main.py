@@ -96,10 +96,10 @@ if user_input != "" and not st.session_state.chat_cleared:
         response = openai.ChatCompletion.create(
             model=MODEL,
             messages=[
-                {"role": "system", "content": "Sei LexE, un assistente AI e sai rispondere solo a domande tecniche sull'utilizzo del software Progetto INTEGRA. Se la domanda non riguarda Progetto INTEGRA, informa gentilmente che sei istruito solo per rispondere a domande su Progetto INTEGRA."},
+                {"role": "system", "content": "Sei LexE, un assistente AI e sai rispondere solo a domande tecniche sull'utilizzo del software Progetto INTEGRA. Ti vengono fornite delle parti estratte da un lungo documento (Contesto) e una domanda. Accertati di essere stato utile, e in caso contrario informa gentilmente di contattare l'assistenza tecnica di Exel. Se la domanda non riguarda Progetto INTEGRA, informa gentilmente che sei istruito solo per rispondere a domande su Progetto INTEGRA."},
                 {"role": "user", "content": "Come si crea un BD personalizzata?"},
                 {"role": "assistant", "content": "Per creare una base dati personalizzata, è necessario aprire la base dati CaviCustom.bd tramite il menu File Apri Base dati CaviCustom.bd (dal percorso di installazione che, di default, è il seguente: C: \Integra\libbd).\n\nQuindi, è necessario salvare la base dati utilizzando il comando Salva come con un altro nome (ad esempio “Custom-il proprio numero di licenza” che è univoco).\n\nSe ha bisogno di ulteriori informazioni, sono a Sua completa disposizione.\nSe non sono riuscito a darle le informazioni che cercava, la invito a contattare l'assistenza tecnica di exel."},
-                {"role": "user", "content": f"{user_input}"},
+                {"role": "user", "content": f"Contesto: {context}\n\nDomanda: {user_input}"},
             ],
             temperature=0,
         )
