@@ -30,7 +30,7 @@ docsearch = Pinecone.from_existing_index(embedding=embedding, index_name=index_n
 llm = OpenAI(temperature=0, openai_api_key=OPENAI_API_KEY, max_tokens=1000)
 qa_chain = load_qa_chain(llm, chain_type="stuff")
 
-st.success("Buongiorno! Sono l'assistente AI per il software Progetto INTEGRA. Sono istruito per rispondere a domande tecniche sull'utilizzo del software. Come posso aiutarla?")   
+st.success("Buongiorno! Sono LexE, l'assistente AI per il software Progetto INTEGRA. Sono istruita per rispondere a domande tecniche sull'utilizzo del software. Come posso aiutarla?")  
 
 if "answers" not in st.session_state:
     st.session_state.answers = []
@@ -80,32 +80,37 @@ if user_input != "" and not st.session_state.chat_cleared:
     # OpenAI GPT 3.5 AI assistant with Langchain + Pinecone #1 => https://youtu.be/15TDwVSpwKc
     index = pinecone.Index(index_name=index_name)
     def integra_bot(query: str):        
-        model='text-embedding-ada-002'
-        res=openai.Embedding.create(
-            input=query,
-            engine=model
-        )
-        # print(res['data'][0]['embedding'])
-        xq=(res['data'][0]['embedding'])
-        xc=index.query(xq,top_k=5,include_metadata=True)
-        context=""
-        for match in xc['matches']:
-            context+=f"\n{(match['metadata']['text'])}"
+        try:       
+            model='text-embedding-ada-002'
+            res=openai.Embedding.create(
+                input=query,
+                engine=model
+            )
+            # print(res['data'][0]['embedding'])
+            xq=(res['data'][0]['embedding'])
+            xc=index.query(xq,top_k=5,include_metadata=True)
+            context=""
+            for match in xc['matches']:
+                context+=f"\n{(match['metadata']['text'])}"
 
-        MODEL = "gpt-3.5-turbo"
-        response = openai.ChatCompletion.create(
-            model=MODEL,
-            messages=[
-                {"role": "system", "content": "Sei LexE, un assistente AI e sai rispondere solo a domande tecniche sull'utilizzo del software Progetto INTEGRA. Ti vengono fornite delle parti estratte da un lungo documento (Contesto) e una domanda. Accertati di essere stato utile, e in caso contrario informa gentilmente di contattare l'assistenza tecnica di Exel. Se la domanda non riguarda Progetto INTEGRA, informa gentilmente che sei istruito solo per rispondere a domande su Progetto INTEGRA."},
-                {"role": "user", "content": "Come si crea un BD personalizzata?"},
-                {"role": "assistant", "content": "Per creare una base dati personalizzata, è necessario aprire la base dati CaviCustom.bd tramite il menu File Apri Base dati CaviCustom.bd (dal percorso di installazione che, di default, è il seguente: C: \Integra\libbd).\n\nQuindi, è necessario salvare la base dati utilizzando il comando Salva come con un altro nome (ad esempio “Custom-il proprio numero di licenza” che è univoco).\n\nSe ha bisogno di ulteriori informazioni, sono a Sua completa disposizione.\nSe non sono riuscito a darle le informazioni che cercava, la invito a contattare l'assistenza tecnica di exel."},
-                {"role": "user", "content": f"Contesto: {context}\n\nDomanda: {user_input}"},
-            ],
-            temperature=0,
-        )
-        print(response["choices"][0]["message"]["content"])
-        ChatGPT_res=(response["choices"][0]["message"]["content"])
-        return(ChatGPT_res)
+            MODEL = "gpt-3.5-turbo"
+            response = openai.ChatCompletion.create(
+                model=MODEL,
+                messages=[
+                    {"role": "system", "content": "Sono LexE, una assistente AI e so rispondere solo a domande tecniche sull'utilizzo del software Progetto INTEGRA. Mi vengono fornite delle parti estratte da un lungo documento (Contesto) e una domanda. Mi accerto di essere stata utile, e in caso contrario informo gentilmente di contattare l'assistenza tecnica di Exel. Se la domanda non riguarda Progetto INTEGRA, informo gentilmente che sono istruita solo per rispondere a domande su Progetto INTEGRA."},
+                    # {"role": "user", "content": "Come si crea un BD personalizzata?"},
+                    # {"role": "assistant", "content": "Per creare una base dati personalizzata, è necessario aprire la base dati CaviCustom.bd tramite il menu File Apri Base dati CaviCustom.bd (dal percorso di installazione che, di default, è il seguente: C: \Integra\libbd).\n\nQuindi, è necessario salvare la base dati utilizzando il comando Salva come con un altro nome (ad esempio “Custom-il proprio numero di licenza” che è univoco).\n\nSe ha bisogno di ulteriori informazioni, sono a Sua completa disposizione.\nSe non sono riuscito a darle le informazioni che cercava, la invito a contattare l'assistenza tecnica di exel."},
+                    {"role": "user", "content": f"Contesto: {context}\n\nDomanda: {user_input}\n\nRispondimi con formattazione Markdown."},
+                ],
+                temperature=0,
+            )
+            print(response["choices"][0]["message"]["content"])
+            ChatGPT_res=(response["choices"][0]["message"]["content"])
+            return(ChatGPT_res)
+        
+        except Exception as e:
+                st.error(f"An error occurred: {str(e)}")
+                return "Sorry, an error occurred while processing your request. Please try again."
 
     answer=integra_bot(user_input)
     st.session_state.questions.append(user_input)
