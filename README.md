@@ -11,9 +11,9 @@ https://github.com/gkamradt/langchain-tutorials/blob/main/data_generation/Ask%20
 per vettorizzare una documentazione in PDF e caricarla su PINECONE usa lo script: "vectorize_pdf_to_Pinecone.py"
 
 ** RUN:
-windows start -> anaconda prompt
-conda activate unstructured
-streamlit run "D:\WebApps\PineconeQ&A\main.py"
+- windows start -> anaconda prompt
+- conda activate unstructured
+- streamlit run "C:\Path\To\main.py"
 
 # # # # 
 
