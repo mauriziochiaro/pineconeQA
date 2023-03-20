@@ -49,17 +49,21 @@ docsearch = Pinecone.from_existing_index(embedding=embedding, index_name=index_n
 llm = OpenAI(temperature=0, openai_api_key=OPENAI_API_KEY, max_tokens=1000)
 qa_chain = load_qa_chain(llm, chain_type="stuff")
 
-AUTORIZZATO = auth.autorizzazione_utente()
+# AUTORIZZATO = auth.autorizzazione_utente()
 
-if AUTORIZZATO: 
-
-    if "answers" not in st.session_state:
-        st.session_state.answers = []
-    if "questions" not in st.session_state:
-        st.session_state.questions = []
-    # if "chat_cleared" not in st.session_state:
-    #     st.session_state.chat_cleared = False    
+# if AUTORIZZATO: 
+RELOAD = False
+if "answers" not in st.session_state:
+    st.session_state.answers = []
+    RELOAD = True
+if "questions" not in st.session_state:
+    st.session_state.questions = []
+# if "chat_cleared" not in st.session_state:
+#     st.session_state.chat_cleared = False    
         
+AUTORIZZATO = auth.autorizzazione_utente(RELOAD)
+
+if AUTORIZZATO:         
     placeholder = st.empty()
     def get_text():
         input_text = placeholder.text_input("You: ", value="", key="input")
