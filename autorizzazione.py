@@ -8,7 +8,7 @@ MAX_EXECUTIONS_PER_CLIENT = 10
 def get_executions():
     return {}
 
-def autorizzazione_utente():
+def autorizzazione_utente(RELOAD: bool):
     # Function to get the client's IP address
     def get_client_ip():
         conn = http.client.HTTPConnection("ifconfig.me")
@@ -34,12 +34,13 @@ def autorizzazione_utente():
 
     print(executions[client_ip])
     # Check if the client has reached the maximum number of script executions
-    if executions[client_ip]["executions"] <= MAX_EXECUTIONS_PER_CLIENT:
-        executions[client_ip]["executions"] += 1
+    if executions[client_ip]["executions"] < MAX_EXECUTIONS_PER_CLIENT:
+        if not RELOAD:
+            executions[client_ip]["executions"] += 1
 
         st.success("Buongiorno! Sono LexE, l'assistente AI per il software Progetto INTEGRA. Sono istruita per rispondere a domande tecniche sull'utilizzo del software. Come posso aiutarla?")  
 
-        st.info("Numero di richieste giornaliere effettuate: {} su {}".format(executions[client_ip]["executions"]-1, MAX_EXECUTIONS_PER_CLIENT))
+        st.info("Numero di richieste giornaliere effettuate: {} su {}".format(executions[client_ip]["executions"], MAX_EXECUTIONS_PER_CLIENT))
 
         return True
 
