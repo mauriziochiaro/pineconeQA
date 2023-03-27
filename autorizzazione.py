@@ -38,7 +38,7 @@ def autorizzazione_utente(RELOAD: bool):
         if not RELOAD:
             executions[client_ip]["executions"] += 1
 
-        st.success("Buongiorno! Sono LexE, l'assistente AI per il software Progetto INTEGRA. Sono istruita per rispondere a domande tecniche sull'utilizzo del software. Come posso aiutarla?")  
+#         st.success("Buongiorno! Sono LexE, l'assistente AI per il software Progetto INTEGRA. Sono istruita per rispondere a domande tecniche sull'utilizzo del software. Come posso aiutarla?")  
 
         st.info("Numero di richieste giornaliere effettuate: {} su {}".format(executions[client_ip]["executions"], MAX_EXECUTIONS_PER_CLIENT))
 
