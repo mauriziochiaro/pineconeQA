@@ -173,7 +173,8 @@ def main():
         st.session_state.enter_pressed = False
 
     if user_input != "" and st.session_state.enter_pressed:
-            is_authorized = auth.autorizzazione_utente(RELOAD=False)  
+#             is_authorized = auth.autorizzazione_utente(RELOAD=False)  
+            is_authorized = True  
             if is_authorized:
                 start_app(user_input)
                 st.session_state.enter_pressed = False
