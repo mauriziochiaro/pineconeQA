@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import date
 import http.client
 
-MAX_EXECUTIONS_PER_CLIENT = 10
+MAX_EXECUTIONS_PER_CLIENT = 25
 
 @st.cache_resource
 def get_executions():
