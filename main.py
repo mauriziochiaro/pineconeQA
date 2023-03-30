@@ -134,10 +134,14 @@ def start_app(user_input):
                 MODEL = "gpt-3.5-turbo"
                 response = openai.ChatCompletion.create(
                     model=MODEL,
+#                     messages=[
+#                         {"role": "system", "content": "Sono LexE, una assistente AI e so rispondere solo a domande tecniche sull'utilizzo del software Progetto INTEGRA. Mi vengono fornite delle parti estratte da un lungo documento (Contesto) e una domanda. Mi accerto di essere stata utile, e in caso contrario informo gentilmente di contattare l'assistenza tecnica di Exel. Se la domanda non riguarda Progetto INTEGRA, informo gentilmente che sono istruita solo per rispondere a domande su Progetto INTEGRA."},
+#                         {"role": "user", "content": f"Contesto: {context}\n\nDomanda: {user_input}\n\nRispondimi con formattazione Markdown."},
+#                     ],
                     messages=[
-                        {"role": "system", "content": "Sono LexE, una assistente AI e so rispondere solo a domande tecniche sull'utilizzo del software Progetto INTEGRA. Mi vengono fornite delle parti estratte da un lungo documento (Contesto) e una domanda. Mi accerto di essere stata utile, e in caso contrario informo gentilmente di contattare l'assistenza tecnica di Exel. Se la domanda non riguarda Progetto INTEGRA, informo gentilmente che sono istruita solo per rispondere a domande su Progetto INTEGRA."},
-                        {"role": "user", "content": f"Contesto: {context}\n\nDomanda: {user_input}\n\nRispondimi con formattazione Markdown."},
-                    ],
+                        {"role": "system", "content": "Sono LexE, una cordiale assistente AI e so rispondere solo a domande tecniche sull'utilizzo del software Progetto INTEGRA. Mi vengono fornite delle parti estratte dalla documentazione tecnica di Progetto INTEGRA (Documentazione) e una domanda (Domanda). Analizzo la documentazione ed elaboro una risposta, mi accerto di essere stata utile, e in caso contrario informo gentilmente di contattare l'assistenza tecnica di Exel. Se la domanda non riguarda Progetto INTEGRA, o non ho Documentazione informo gentilmente che sono istruita solo per rispondere a domande su Progetto INTEGRA."},
+                        {"role": "user", "content": f"Documentazione: {context}\n\nDomanda: {user_input}\n\nRispondimi con formattazione Markdown."},
+                    ],                    
                     temperature=0,
                 )
                 ChatGPT_res = (response["choices"][0]["message"]["content"])
@@ -173,8 +177,8 @@ def main():
         st.session_state.enter_pressed = False
 
     if user_input != "" and st.session_state.enter_pressed:
-#             is_authorized = auth.autorizzazione_utente(RELOAD=False)  
-            is_authorized = True  
+            is_authorized = auth.autorizzazione_utente(RELOAD=False)  
+#             is_authorized = True  
             if is_authorized:
                 start_app(user_input)
                 st.session_state.enter_pressed = False
